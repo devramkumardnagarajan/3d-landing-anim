@@ -106,9 +106,9 @@ function init() {
 					shininess: 150,
 					specular: 0x222222
 				} );
-				let bgeometry = new THREE.BoxGeometry( 20, 30, 5 );
-				let lcube = new THREE.Mesh( bgeometry, bmaterial );
-				lcube.position.set( -1, 0, -1 );
+				let bgeometry = new THREE.BoxGeometry(0.3, 6, 0.1);
+				let lcube = new THREE.Mesh(bgeometry, bmaterial);
+				lcube.position.set(0.5, -1.5, -0.5);
 				lcube.castShadow = true;
 				lcube.receiveShadow = true;
 				scene.add( lcube );

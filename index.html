@@ -16,28 +16,28 @@
 		<!-- Remove this when import maps will be widely supported -->
 		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.module.min.js" integrity="sha512-tzlZk9pQTg2yyYYN+VnoGi0f3X0xLskWh9G+F1IhgkBlUXLA44OdnwLlVm8A9nMlHm6Vo+QaDLVhnWU7iX+SLg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
-		<!--<script src="//cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>-->
+		<!--<script src="//cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
 		<script type="importmap">
 			{
 				"imports": {
 					"three": "./build/three.module.js"
 				}
 			}
-		</script>
+		</script>-->
 		
 		
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 		<script type="module">
 
-			import * as THREE from 'three';
+			import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.119.1/build/three.module.js';
 
 			//import Stats from './jsm/libs/stats.module.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { OBJLoader } from './jsm/loaders/OBJLoader.js';
-			
-			import { RectAreaLightHelper } from './jsm/helpers/RectAreaLightHelper.js';
-			import { RectAreaLightUniformsLib } from './jsm/lights/RectAreaLightUniformsLib.js';
+			import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.119.1/examples/jsm/controls/OrbitControls.js';
+			import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.119.1/examples/jsm/loaders/OBJLoader.js';
+		
+			import { RectAreaLightHelper } from 'https://cdn.jsdelivr.net/npm/three@0.119.1/examples/jsm/helpers/RectAreaLightHelper.js';
+			import { RectAreaLightUniformsLib } from 'https://cdn.jsdelivr.net/npm/three@0.119.1/examples/jsm/lights/RectAreaLightUniformsLib.js';
 			var gender = 'men';
 			var category = '1';
 			var product = '1';

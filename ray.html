@@ -96,6 +96,43 @@ function init() {
       });
 
     });
+
+	//Add Cube
+
+	let bmaterial = new THREE.MeshPhongMaterial( {
+					color: 0xdddddd,
+					shininess: 150,
+					specular: 0x222222
+				} );
+				let bgeometry = new THREE.BoxGeometry( 20, 300, 5 );
+				let lcube = new THREE.Mesh( bgeometry, bmaterial );
+				lcube.position.set( -30, 0, -100 );
+				lcube.castShadow = true;
+				lcube.receiveShadow = true;
+				scene.add( lcube );
+				let bcmaterial = new THREE.MeshPhongMaterial( {
+					color: 0xff0000,
+					shininess: 150,
+					specular: 0x222222
+				} );
+				let cube = new THREE.Mesh( bgeometry, bcmaterial );
+				cube.position.set( 0, 0, -100 );
+				cube.castShadow = true;
+				cube.receiveShadow = true;
+				scene.add( cube );
+				let brmaterial = new THREE.MeshPhongMaterial( {
+					color: 0xffffff,
+					shininess: 150,
+					specular: 0x222222
+				});
+				
+				let rcube = new THREE.Mesh( bgeometry, brmaterial );
+				rcube.position.set( 30, 0, -100 );
+				rcube.castShadow = true;
+				rcube.receiveShadow = true;
+				scene.add( rcube );
+				
+				
 	// Add product
 	addProduct('men',1,2,0,0);
 	

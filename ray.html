@@ -96,8 +96,33 @@ function init() {
       });
 
     });
-	addProduct('men',1,2,0,0);	
+	// Add product
+	addProduct('men',1,2,0,0);
+	
+	//Light
 	scene.add(new THREE.AmbientLight(0x666666));
+	
+	light = new THREE.DirectionalLight(0xdfebff, 0.3);
+	light.position.set(500, 100, 80);
+	
+	
+	light.castShadow = true;
+
+	light.shadow.mapSize.width = 1024;
+	light.shadow.mapSize.height = 1024;
+
+	var d = 300;
+
+	light.shadow.camera.left = -d;
+	light.shadow.camera.right = d;
+	light.shadow.camera.top = d;
+	light.shadow.camera.bottom = -d;
+
+	light.shadow.camera.far = 100;
+	light.shadowDarkness = 0.5;
+	light.shadowCameraVisible = true;
+	scene.add(light);
+	
   renderer = new THREE.WebGLRenderer({
     antialias: true
   });
@@ -119,7 +144,7 @@ function init() {
   controls.update();
 
   window.addEventListener('resize', onWindowResize, false);
-
+  renderer.domElement.addEventListener( 'mousemove', onMouseMove, false );
   renderer.domElement.addEventListener('click', onClick, false);
 
 }
@@ -147,6 +172,31 @@ function onClick() {
 
 }
 
+	function onMouseMove( event ) {
+
+	event.preventDefault();
+	/*mouse.x = ( event.clientX - windowHalf.x );
+	mouse.y = ( event.clientY - windowHalf.y );*/
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+
+  var intersects = raycaster.intersectObject(scene, true);
+  console.log(intersects);
+  if (intersects.length > 0) {
+	
+		var object = intersects[0].object;
+
+    object.material.color.set( Math.random() * 0xffffff );
+
+  }
+	
+	render();
+	
+
+
+}
 function onWindowResize() {
 
   camera.aspect = window.innerWidth / window.innerHeight;

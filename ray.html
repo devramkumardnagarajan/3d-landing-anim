@@ -236,31 +236,32 @@ function onClick() {
 			if(object.name =="men_1_1"){
 				l = c = r = l;			
 				//object.rotation.y = 0;
-				scene.getObjectByName("men_1_1").rotation.y = 0;
+				animatePos(object.name,0,-1.8);
 			}
 			else if(object.name =="men_2_1"){
 				l = c = r = c;
-				console.log(object);
-				scene.getObjectByName("men_2_1").position.setZ(-1.95);
-				//object.position.setZ(-1.95);		
-				console.log(object.position.z);		
+				animatePos(object.name,0,-1.75);		
 			}
 			else if(object.name =="men_1_2"){
 				l = c = r = r;
-				//object.rotation.y = 0;
-				scene.getObjectByName("men_1_2").rotation.y = 0;
+				animatePos(object.name,0,-1.8);				
 			}else{
-				scene.getObjectByName("men_1_1").rotation.y = -0.34;
-				scene.getObjectByName("men_2_1").position.setZ(-2);
-				console.log(scene.getObjectByName("men_2_1").position.z);
+				animatePos("men_1_1",-0.34,-2);
+				animatePos("men_2_1",0,-2);
+				animatePos("men_1_2",0.34,-2);
 			}			
 	}else{
-		//scene.getObjectByName("men_1_1").rotation.y = -0.34;
-		scene.getObjectByName("men_2_1").position.setZ(-2);
-		console.log(scene.getObjectByName("men_2_1").position.z);
+		animatePos("men_1_1",-0.34,-2);
+		animatePos("men_2_1",0,-2);
+		animatePos("men_1_2",0.34,-2);
 	}
+	
 	setCubeObjectColor(l,c,r);	
 	render();
+}
+function animatePos(objName,ry,pz){
+	scene.getObjectByName(objName).position.setZ(pz);
+	scene.getObjectByName(objName).rotation.y=ry;
 }
 function setCubeObjectColor(l,c,r){
 	scene.getObjectByName("left").material.color.set(l);

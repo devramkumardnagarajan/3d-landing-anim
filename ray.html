@@ -42,7 +42,9 @@ if(width < height)
 	height = width;
 }
 var pixelRatio = window.devicePixelRatio;
-
+let lColor = 0X494a48;
+let cColor = 0Xe22d2c;
+let rColor = 0X8e8d8e ;
 init();
 render();
 
@@ -99,60 +101,29 @@ function init() {
 
     });*/
 
-	//Add Cube
-
-	let bmaterial = new THREE.MeshPhongMaterial( {
-					color: 0xdddddd,
-					shininess: 150,
-					specular: 0x222222
-				} );
-				let bgeometry = new THREE.BoxGeometry(0.8, 7, 0.3);
-				let lcube = new THREE.Mesh(bgeometry, bmaterial);
-				//lcube.position.set(0.5, -1.5, -0.5);
-				lcube.position.set(-1, 2.5, -7.5);
-				lcube.rotation.set(0, 0, 0);
-				lcube.castShadow = true;
-				lcube.receiveShadow = true;
-				scene.add( lcube );
-				let bcmaterial = new THREE.MeshPhongMaterial( {
-					color: 0xff0000,
-					shininess: 150,
-					specular: 0x222222
-				} );
-				let cube = new THREE.Mesh( bgeometry, bcmaterial );
-				cube.position.set( 0, 2.5, -7.5 );
-				cube.castShadow = true;
-				cube.receiveShadow = true;
-				scene.add( cube );
-				let brmaterial = new THREE.MeshPhongMaterial( {
-					color: 0xffffff,
-					shininess: 150,
-					specular: 0x222222
-				});
-				
-				let rcube = new THREE.Mesh( bgeometry, brmaterial );
-				rcube.position.set( 1, 2.5, -7.5 );
-				rcube.castShadow = true;
-				rcube.receiveShadow = true;
-				scene.add( rcube );
-				
+	
+	//Add Cude		
+	addCube("left",-1,lColor,-0.34);
+	addCube("center",0,cColor,0);
+	addCube("right",1,rColor,0.34);
 
 	// Add product
-	//addProduct('men',1,1,-1.5,-0.34);		
+	addProduct('men',1,1,-1.5,-0.34);		
 	addProduct('men',2,1,0,0);
-	//addProduct('men',1,2,1.5,0.34);
+	addProduct('men',1,2,1.5,0.34);
 	
 	//Light
-	scene.add(new THREE.AmbientLight(0x666666));
+	//scene.add(new THREE.AmbientLight(0x666666));
 	
 	light = new THREE.DirectionalLight(0xdfebff, 0.3);
-	light.position.set(0, 2, -2.7);
+	light.name ="dLight";
+	light.position.set(0, 2, 2);
 	
 	
 	light.castShadow = true;
 
-	light.shadow.mapSize.width = 1024;
-	light.shadow.mapSize.height = 1024;
+	light.shadow.mapSize.width = windowHalf.x;
+	light.shadow.mapSize.height = windowHalf.y;
 
 	var d = 3;
 
@@ -186,6 +157,12 @@ function init() {
 	
 	})
 	
+	//Floor
+    const geoFloor = new THREE.BoxGeometry( 0, -2, -2 );
+	const matStdFloor = new THREE.MeshStandardMaterial( { color: 0x808080, roughness: 0.1, metalness: 0 } );
+	const mshStdFloor = new THREE.Mesh( geoFloor, matStdFloor );
+	scene.add( mshStdFloor );
+
   renderer = new THREE.WebGLRenderer({
     antialias: true
   });
@@ -222,7 +199,7 @@ function onClick() {
   raycaster.setFromCamera(mouse, camera);
 
   var intersects = raycaster.intersectObject(scene, true);
-  //console.log(intersects);
+  console.log(intersects);
   if (intersects.length > 0) {
 	
 		var object = intersects[0].object;
@@ -249,11 +226,48 @@ function onClick() {
 
 	var intersects = raycaster.intersectObject(scene, true);
 	//console.log(intersects);
+	let l = lColor;
+	let c = cColor;
+	let r = rColor;
 	if (intersects.length > 0) {
 		var object = intersects[0].object;
-		object.material.color.set( Math.random() * 0xffffff );
+			console.log("name: ",object.name);
+			
+			if(object.name =="men_1_1"){
+				l = c = r = l;			
+				//object.rotation.y = 0;	
+			}
+			else if(object.name =="men_2_1"){
+				l = c = r = c;
+				console.log(object);
+				//object.position.setZ(-1.95);		
+				console.log(object.position.z);		
+			}
+			else if(object.name =="men_1_2"){
+				l = c = r = r;
+				//object.rotation.y = 0;				
+			}else{
+				//scene.getObjectByName("men_1_1").rotation.y = -0.34;
+				scene.getObjectByName("men_2_1").position.setZ(-2);
+				console.log(scene.getObjectByName("men_2_1").position.z);
+			}			
+	}else{
+		//scene.getObjectByName("men_1_1").rotation.y = -0.34;
+		scene.getObjectByName("men_2_1").position.setZ(-2);
+		console.log(scene.getObjectByName("men_2_1").position.z);
 	}
+	setCubeObjectColor(l,c,r);	
 	render();
+}
+function setCubeObjectColor(l,c,r){
+	scene.getObjectByName("left").material.color.set(l);
+	scene.getObjectByName("center").material.color.set(c);
+	scene.getObjectByName("right").material.color.set(r);
+	if(l == c){
+		scene.getObjectByName("dLight").color.set(r);	
+	}else{
+		scene.getObjectByName("dLight").color.set(0xdfebff);
+	}
 }
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -278,10 +292,28 @@ function render() {
 
 }
 
+function addCube(name,x,color,ry){
+	//Add Cube
+	let material = new THREE.MeshPhongMaterial( {
+		color: color,
+		shininess: 150,
+		specular: 0x222222
+	} );
+	let geometry = new THREE.BoxGeometry(0.8, 7, 0.3);
+	let lcube = new THREE.Mesh(geometry, material);
+	//lcube.position.set(0.5, -1.5, -0.5);
+	lcube.position.set(x, 2.5, -7.5);
+	lcube.rotation.set(0, ry, 0);
+	lcube.castShadow = true;
+	lcube.receiveShadow = true;
+	lcube.name = name;
+	scene.add( lcube );
+}
+
 function addProduct(g,c,p,x,rx){
-    
+    let modelName = `${g}_${c}_${p}`;
 	loadSvg(g,c,p,function(resp){
-	obj2_model_load(g+'/cat'+c+'/model',resp,x,rx);
+	obj2_model_load(g+'/cat'+c+'/model',resp,x,rx,modelName);
 	
 	});
 	
@@ -360,29 +392,26 @@ function set_materials(g,c,p,svgData,response){
 }
 
 //model = "men/cat1";
-function obj2_model_load(model,resp,x,rx){
-console.log(resp);
+function obj2_model_load(model,resp,x,rx,name){
+//console.log(resp);
 var loader = new OBJLoader(manager); 
 loader.load('./assets/'+model+'.obj', function ( data ) {
 		//if(object != null){
 		//scene.remove(object);
 		//}
 		//object = null;
-		console.log(data);
-		let tdobject = new THREE.Object3D(model);
-		//tdobject.name = model;
-		//tdobject = data.detail.loaderRootNode	;
+		//console.log("obj_data:",data);
+		data.name = name;
+		let tdobject = new THREE.Object3D();
 		tdobject = data	;
-		console.log(tdobject);
+		//console.log(tdobject);
 		let materials =[];
 		tdobject.traverse( function ( node ) {
 			if ( node.isMesh ) {
-			
 				node.material = resp
-				node.geometry.uvsNeedUpdate = true;	
-				//object = node;
-				
-			
+				node.geometry.uvsNeedUpdate = true;
+				node.name =name;	
+				//object = node;		
 			}
 		}); 
 		var scale = height/4;
@@ -395,7 +424,8 @@ loader.load('./assets/'+model+'.obj', function ( data ) {
 		tdobject.rotation.set(0, rx, 0);
 		//tdobject.rotation.set(0, 0, 0);
 		tdobject.receiveShadow = true;
-		tdobject.castShadow = true;		
+		tdobject.castShadow = true;
+		tdobject.name = name;		
 		scene.add(tdobject);
 		render();
 		//console.log("scene",scene);

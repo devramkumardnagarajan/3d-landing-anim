@@ -32,22 +32,26 @@
         0.25,
         20
       );
-      camera.position.set(-0, -4.5, -2.5);
+      camera.position.set(0, -5.5, -2.5);
 
       scene = new THREE.Scene();
 
       raycaster = new THREE.Raycaster();
       mouse = new THREE.Vector2();
-
-      let x = -2;
-      let tx = 2;
-      for (var i = x; i < tx; i = i + 0.2) {
-        for (var j = -1.5; j < 2.5; j = j + 0.3) {
+      let c = 1;
+      let x = -3;
+      let tx = 3;
+      for (var i = x; i < tx; i = i + 0.25) {
+        for (var j = -1.5; j < 2.5; j = j + 0.25) {
           const geometry = new THREE.SphereGeometry(0.01, 16, 8);
           const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
           const sphere = new THREE.Mesh(geometry, material);
           sphere.position.set(i, j, 0);
           scene.add(sphere);
+          if (c == 1) {
+            console.log(sphere);
+            c += 1;
+          }
         }
       }
 
@@ -88,7 +92,6 @@
 
       if (intersects.length > 0) {
         var object = intersects[0].object;
-
         object.material.color.set(Math.random() * 0xffffff);
       }
       console.log('cam pos:', camera.position);
@@ -105,19 +108,23 @@
     }
 
     function render(ts) {
-      var ws = new THREE.Vector2(-2, 1.5);
+      var ws = new THREE.Vector2(-2, -1.5);
       var vLength = scene.children.length;
       window.requestAnimationFrame(render);
-      console.log(ts);
-      console.log(vLength);
       for (var i = 0; i < vLength; i++) {
         var v = scene.children[i].position;
         var dist = new THREE.Vector2(v.x, v.y).sub(ws);
 
         var size = 0.5;
-        var magnitude = 0.1;
-        v.z = Math.sin(dist.length() / -size + ts / 500) * magnitude;
+        var magnitude = 0.3;
+        var d = dist.length() / size;
+        let z = Math.sin(v.x / -size);
+        //v.z = Math.sin(d / -size + ts / 500) * magnitude;
+        //v.z = Math.sin(dist.length() / size + ts / 500) * magnitude;
+        v.z = Math.sin(v.x / -size + ts / 500) * magnitude;
+        //let z = Math.sin(v.x / v.z) * 1;
         scene.children[i].position.set(v.x, v.y, v.z);
+        scene.children[i].scale.setZ(z);
       }
 
       renderer.render(scene, camera);

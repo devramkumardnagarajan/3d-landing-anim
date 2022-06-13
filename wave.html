@@ -108,7 +108,7 @@
     }
 
     function render(ts) {
-      var ws = new THREE.Vector2(-2, -1.5);
+      var ws = new THREE.Vector2(0, 0.5);
       var vLength = scene.children.length;
       window.requestAnimationFrame(render);
       for (var i = 0; i < vLength; i++) {
@@ -116,15 +116,15 @@
         var dist = new THREE.Vector2(v.x, v.y).sub(ws);
 
         var size = 0.5;
-        var magnitude = 0.3;
+        var magnitude = 0.1;
         var d = dist.length() / size;
-        let z = Math.sin(v.x / -size);
+        let z = Math.sin(v.x / -size + ts / 500) * magnitude;
         //v.z = Math.sin(d / -size + ts / 500) * magnitude;
         //v.z = Math.sin(dist.length() / size + ts / 500) * magnitude;
-        v.z = Math.sin(v.x / -size + ts / 500) * magnitude;
+        v.z = Math.sin(v.x / -size + ts / 1000) * magnitude;
         //let z = Math.sin(v.x / v.z) * 1;
         scene.children[i].position.set(v.x, v.y, v.z);
-        scene.children[i].scale.setZ(z);
+        scene.children[i].scale.setZ(v.z * 10);
       }
 
       renderer.render(scene, camera);

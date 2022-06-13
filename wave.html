@@ -5,6 +5,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
   </head>
   <body>
+    <h1>Wave!</h1>
   </body>
   <script type="module">
     import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.119.1/build/three.module.js';
@@ -31,7 +32,7 @@
         0.25,
         20
       );
-      camera.position.set(0, -1.5, -3);
+      camera.position.set(-0, -4.5, -2.5);
 
       scene = new THREE.Scene();
 
@@ -41,9 +42,9 @@
       let x = -2;
       let tx = 2;
       for (var i = x; i < tx; i = i + 0.2) {
-        for (var j = -0.5; j < 2.5; j = j + 0.3) {
+        for (var j = -1.5; j < 2.5; j = j + 0.3) {
           const geometry = new THREE.SphereGeometry(0.01, 16, 8);
-          const material = new THREE.MeshBasicMaterial({ color: 0x00FF00 });
+          const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
           const sphere = new THREE.Mesh(geometry, material);
           sphere.position.set(i, j, 0);
           scene.add(sphere);
@@ -90,7 +91,7 @@
 
         object.material.color.set(Math.random() * 0xffffff);
       }
-
+      console.log('cam pos:', camera.position);
       render();
     }
 
